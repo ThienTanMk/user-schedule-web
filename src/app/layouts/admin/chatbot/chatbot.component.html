@@ -1,0 +1,145 @@
+<div class="flex flex-col h-full">
+  <!-- Chat Header -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-blue-100 rounded-full">
+          <i class="fas fa-robot text-blue-600 text-lg"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">AI Assistant</h2>
+          <p class="text-sm text-gray-500">Luôn sẵn sàng hỗ trợ bạn</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button class="text-gray-500 hover:text-gray-700" (click)="clearChat()">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <div class="relative group dropdown-wrapper">
+          <button class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div
+            class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden group-hover:block"
+          >
+            <button
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              (click)="clearChat()"
+            >
+              Xóa cuộc trò chuyện
+            </button>
+            <button
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              Xuất lịch sử chat
+            </button>
+            <button
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              Cài đặt AI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages Area -->
+  <div class="flex-1 p-4 overflow-y-auto">
+    <div class="space-y-4 max-w-[90%] mx-auto">
+      <div
+        *ngFor="let message of messages"
+        [ngClass]="message.isUser ? 'flex justify-end' : 'flex justify-start'"
+      >
+        <div
+          [ngClass]="
+            message.isUser
+              ? 'flex items-start space-x-3 flex-row-reverse space-x-reverse max-w-[80%]'
+              : 'flex items-start space-x-3 max-w-[80%]'
+          "
+        >
+          <div
+            class="h-8 w-8 flex items-center justify-center rounded-full text-white flex-shrink-0"
+            [ngClass]="message.isUser ? 'bg-gray-400' : 'bg-blue-100'"
+          >
+            <i
+              class="fas"
+              [ngClass]="message.isUser ? 'fa-user' : 'fa-robot text-blue-600'"
+            ></i>
+          </div>
+          <div
+            class="rounded-2xl px-4 py-3"
+            [ngClass]="
+              message.isUser
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-900'
+            "
+          >
+            <p class="text-sm leading-relaxed">{{ message.text }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isTyping" class="flex justify-start">
+        <div class="flex items-start space-x-3 max-w-[90%]">
+          <div
+            class="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"
+          >
+            <i class="fas fa-robot text-sm"></i>
+          </div>
+          <div class="bg-gray-100 rounded-2xl px-4 py-3">
+            <div class="flex space-x-1">
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              ></div>
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"
+              ></div>
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="bg-white border-t border-gray-200 p-4">
+    <div class="max-w-[90%] mx-auto">
+      <div class="flex items-end space-x-3">
+        <div class="flex-1 relative">
+          <input
+            type="text"
+            [(ngModel)]="currentMessage"
+            (keypress)="onKeyPress($event)"
+            placeholder="Nhập nội dung lên lịch họp..."
+            class="w-full pr-24 py-3 text-sm resize-none bg-gray-100 rounded-lg px-4 outline-none"
+            [disabled]="isTyping"
+          />
+          <div
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2"
+          >
+            <button class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <button class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-microphone"></i>
+            </button>
+          </div>
+        </div>
+        <button
+          (click)="sendMessage()"
+          [disabled]="!currentMessage.trim() || isTyping"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 text-center">
+        AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.
+      </p>
+    </div>
+  </div>
+</div>

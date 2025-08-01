@@ -6,15 +6,16 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-admin',
   standalone: false,
   templateUrl: './admin.component.html',
-  styleUrl: './admin.component.scss'
+  styleUrl: './admin.component.scss',
 })
 export class AdminComponent {
- currentUserImage = '';
+  currentUserImage = '';
   currentUserEmail = 'admin@example.com';
   activeMenuItem = '';
   selectedConversation: HistoryItem | null = null;
-constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
   onMenuItemSelected(menuItem: string) {
+    console.log(menuItem);
     this.activeMenuItem = menuItem;
     this.selectedConversation = null;
   }

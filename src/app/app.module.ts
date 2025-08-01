@@ -9,11 +9,10 @@ import { LoginComponent } from './layouts/login/login.component';
 import { UserComponent } from './layouts/user/user.component';
 import { UserDetailScheduleComponent } from './layouts/user/user-detail-schedule/user-detail-schedule.component';
 import { CreateAccountComponent } from './layouts/admin/create-account/create-account.component';
-import { MailComponent } from './layouts/admin/mail/mail.component';
-import { ScheduleComponent } from './layouts/admin/schedule/schedule.component';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
+import { ChatbotComponent } from './layouts/admin/chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { CoreModule } from './core/core.module';
     UserComponent,
     UserDetailScheduleComponent,
     CreateAccountComponent,
-    MailComponent,
-    ScheduleComponent
+    ChatbotComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,9 +32,9 @@ import { CoreModule } from './core/core.module';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

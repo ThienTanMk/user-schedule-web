@@ -1,60 +1,61 @@
-<div class="w-64 h-screen flex flex-col" style="background-color: #212121;">
-  <div class="p-4 flex flex-col items-center flex-shrink-0">
-    <span class="text-xl text-white">
-      {{ userEmail || 'admin@example.com' }}
-    </span>
-  </div>
-
-  <div class="flex-1 px-4 flex flex-col min-h-0">
-    <div class="space-y-4 flex-shrink-0">
-      <button class="w-full py-4 px-5 rounded-lg text-left font-medium transition-all duration-200 text-lg"
-        [ngClass]="activeMenuItem === 'mail' ? 'active-menu-item' : 'inactive-menu-item'"
-        (click)="selectMenuItem('mail')" style="background-color: #FFFFFF; color: #212121;">
-        <span>Soạn mail</span>
-      </button>
-      <button class="w-full py-4 px-5 rounded-lg text-left font-medium transition-all duration-200 text-lg"
-        [ngClass]="activeMenuItem === 'schedule' ? 'active-menu-item' : 'inactive-menu-item'"
-        (click)="selectMenuItem('schedule')" style="background-color: #FFFFFF; color: #212121;">
-        <span>Lên lịch họp</span>
-      </button>
-      <button class="w-full py-4 px-5 rounded-lg text-left font-medium transition-all duration-200 text-lg"
-        [ngClass]="activeMenuItem === 'create-account' ? 'active-menu-item' : 'inactive-menu-item'"
-        (click)="selectMenuItem('create-account')" style="background-color: #FFFFFF; color: #212121;">
-        <span>Tạo tài khoản</span>
-      </button>
-    </div>
-
-    <div class="mt-8 flex-1 min-h-0 flex flex-col">
-      <div class="rounded-lg bg-[#D9D9D9] flex-1 flex flex-col min-h-0">
-        <div class="p-4 pb-2 flex-shrink-0">
-          <h3 class="text-sm font-medium text-[#212121]">Lịch sử</h3>
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <div class="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <!-- User Profile -->
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div
+          class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold"
+        >
+          <i class="fas fa-user"></i>
         </div>
-        <div class="flex-1 px-4 pb-4 overflow-y-auto min-h-0">
-          <div class="space-y-2">
-            <div *ngFor="let item of historyItems" class="p-3 rounded cursor-pointer hover:opacity-80 transition-all duration-200"
-              [ngClass]="selectedHistoryId === item.id ? 'bg-cyan-500' : ''"
-              [style.background-color]="selectedHistoryId === item.id ? '#06b6d4' : '#7E7E7E'"
-              (click)="selectHistoryItem(item)">
-              <div class="text-white text-xs">
-                <p class="font-medium mb-1">{{ item.title }}</p>
-                <p class="opacity-75">{{ item.date }}</p>
-                <p class="opacity-75">{{ item.type }}</p>
-              </div>
-            </div>
-            <div *ngIf="historyItems.length === 0" class="text-center py-4">
-              <p class="text-xs text-[#7E7E7E]">Chưa có lịch sử</p>
-            </div>
-          </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">
+            {{ userEmail || "admin@example.com" }}
+          </p>
+          <p class="text-xs text-gray-500">Administrator</p>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="p-4 flex-shrink-0">
-    <button
-      class="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-lg"
-      (click)="signOut()">
-      Sign out
-    </button>
+    <!-- Navigation -->
+    <nav class="flex-1 px-4 py-6 space-y-2">
+      <button
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        [ngClass]="
+          activeMenuItem === 'agent'
+            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        "
+        (click)="selectMenuItem('agent')"
+      >
+        <i class="fas fa-robot w-5 text-base"></i>
+        <span>AI Agent</span>
+      </button>
+
+      <button
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        [ngClass]="
+          activeMenuItem === 'create-account'
+            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        "
+        (click)="selectMenuItem('create-account')"
+      >
+        <i class="fas fa-user-plus w-5 text-base"></i>
+        <span>Tạo tài khoản</span>
+      </button>
+    </nav>
+
+    <!-- Sign Out -->
+    <div class="p-4 border-t border-gray-200">
+      <button
+        class="w-full flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium"
+        (click)="signOut()"
+      >
+        <i class="fas fa-sign-out-alt mr-3 w-4"></i>
+        Đăng xuất
+      </button>
+    </div>
   </div>
 </div>

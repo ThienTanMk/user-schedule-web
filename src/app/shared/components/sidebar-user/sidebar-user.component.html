@@ -1,49 +1,114 @@
-<div class="w-64 h-screen flex flex-col" style="background-color: #212121;">
-  <div class="p-4 flex flex-col items-center flex-shrink-0">
-    <span class="text-xl text-white">
-      {{ userEmail || 'user@example.com' }}
-    </span>
-  </div>
-
-  <div class="flex-1 px-4 flex flex-col min-h-0">
-    <div class="flex-shrink-0">
-      <button class="w-full py-4 px-5 rounded-lg mb-6 text-left font-medium text-lg transition-all duration-200"
-        style="background-color: #FFFFFF; color: #212121;" (click)="toggleMeetingHistory()">
-        Danh sách lịch họp
-      </button>
-    </div>
-    <div class="flex-1 min-h-0 flex flex-col" *ngIf="showMeetingHistory">
-      <div class="rounded-lg bg-[#D9D9D9] flex-1 flex flex-col min-h-0">
-        <div class="p-4 pb-2 flex-shrink-0">
-          <h3 class="text-sm font-medium text-[#212121]">Lịch họp</h3>
-        </div>
-        <div class="flex-1 px-4 pb-4 overflow-y-auto min-h-0">
-          <div class="space-y-3">
-            <div *ngFor="let meeting of meetingHistory; let i = index"
-              class="p-3 rounded-lg cursor-pointer hover:opacity-80 transition-all duration-200"
-              [ngStyle]="{'background-color': meeting.id === selectedMeetingId ? '#06b6d4' : (!meeting.isRead ? '#EAB308' : '#7E7E7E')}"
-              (click)="selectMeeting(meeting)">
-              <div class="text-white text-xs">
-                <p class="font-medium mb-1">{{ meeting.title }}</p>
-                <p class="opacity-75">{{ meeting.date }}</p>
-                <p class="opacity-75">{{ meeting.time }}</p>
-              </div>
-            </div>
-            <div *ngIf="meetingHistory.length === 0" class="text-center py-4">
-              <p class="text-xs text-[#7E7E7E]">
-                Chưa có lịch họp nào
-              </p>
-            </div>
-          </div>
-        </div>
+<!-- Sidebar -->
+<div class="w-80 h-screen bg-slate-50 border-r border-slate-200 flex flex-col">
+  <!-- User Info -->
+  <div class="p-6 border-b border-slate-200">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-user text-slate-600 text-base"></i>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-slate-900">
+          {{ userEmail || "user@example.com" }}
+        </p>
+        <p class="text-xs text-slate-500">Quản lý lịch họp</p>
       </div>
     </div>
   </div>
 
-  <div class="p-4 flex-shrink-0">
-    <button class="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-lg"
-      (click)="signOut()">
-      Sign out
+  <!-- Meeting List Section -->
+  <div class="flex-1 flex flex-col">
+    <!-- Header -->
+    <div
+      class="p-6 pb-4 flex items-center justify-between cursor-pointer"
+      (click)="toggleMeetingHistory()"
+    >
+      <div class="flex items-center gap-2">
+        <h2 class="text-lg font-semibold text-slate-900">Danh sách lịch họp</h2>
+        <span class="text-xs bg-slate-200 text-slate-700 rounded px-2 py-0.5">{{
+          meetingHistory.length
+        }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          class="h-8 w-8 flex items-center justify-center bg-transparent hover:bg-slate-100 rounded"
+        ></button>
+        <i
+          class="fas"
+          [ngClass]="
+            showMeetingHistory ? 'fa-chevron-down' : 'fa-chevron-right'
+          "
+          class="text-slate-600 text-sm"
+        ></i>
+      </div>
+    </div>
+
+    <!-- Meeting List -->
+    <div
+      class="flex-1 overflow-y-auto px-6 pb-6 space-y-3"
+      *ngIf="showMeetingHistory"
+    >
+      <ng-container *ngIf="meetingHistory.length > 0; else empty">
+        <div
+          *ngFor="let meeting of meetingHistory"
+          class="rounded-lg border cursor-pointer transition-all hover:shadow-sm p-4"
+          [ngStyle]="{
+            'background-color':
+              meeting.id === selectedMeetingId
+                ? '#e0f2fe'
+                : !meeting.isRead
+                ? '#fef08a'
+                : '#f1f5f9',
+            'border-color':
+              meeting.id === selectedMeetingId ? '#38bdf8' : 'transparent'
+          }"
+          (click)="selectMeeting(meeting)"
+        >
+          <h3
+            class="font-medium text-sm mb-2"
+            [ngClass]="
+              meeting.id === selectedMeetingId
+                ? 'text-sky-900'
+                : 'text-slate-900'
+            "
+          >
+            {{ meeting.title }}
+          </h3>
+          <div class="space-y-1 text-xs text-slate-600">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar w-3 h-3"></i>
+              <span>{{ meeting.date }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clock w-3 h-3"></i>
+              <span>{{ meeting.time }}</span>
+            </div>
+          </div>
+          <div *ngIf="meeting.id === selectedMeetingId" class="mt-2">
+            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded"
+              >Đang chọn</span
+            >
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #empty>
+        <div class="text-center py-4">
+          <p class="text-xs text-slate-400">Chưa có lịch họp nào</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Sign Out Button -->
+  <div class="p-6 pt-0">
+    <button
+      class="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm flex items-center justify-center gap-2"
+      (click)="signOut()"
+    >
+      <i class="fas fa-right-from-bracket w-4 h-4"></i>
+      Đăng xuất
     </button>
   </div>
 </div>
