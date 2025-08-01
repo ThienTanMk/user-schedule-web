@@ -1,0 +1,49 @@
+<div class="w-64 h-screen flex flex-col" style="background-color: #212121;">
+  <div class="p-4 flex flex-col items-center flex-shrink-0">
+    <span class="text-xl text-white">
+      {{ userEmail || 'user@example.com' }}
+    </span>
+  </div>
+
+  <div class="flex-1 px-4 flex flex-col min-h-0">
+    <div class="flex-shrink-0">
+      <button class="w-full py-4 px-5 rounded-lg mb-6 text-left font-medium text-lg transition-all duration-200"
+        style="background-color: #FFFFFF; color: #212121;" (click)="toggleMeetingHistory()">
+        Danh sách lịch họp
+      </button>
+    </div>
+    <div class="flex-1 min-h-0 flex flex-col" *ngIf="showMeetingHistory">
+      <div class="rounded-lg bg-[#D9D9D9] flex-1 flex flex-col min-h-0">
+        <div class="p-4 pb-2 flex-shrink-0">
+          <h3 class="text-sm font-medium text-[#212121]">Lịch họp</h3>
+        </div>
+        <div class="flex-1 px-4 pb-4 overflow-y-auto min-h-0">
+          <div class="space-y-3">
+            <div *ngFor="let meeting of meetingHistory; let i = index"
+              class="p-3 rounded-lg cursor-pointer hover:opacity-80 transition-all duration-200"
+              [ngStyle]="{'background-color': meeting.id === selectedMeetingId ? '#06b6d4' : (!meeting.isRead ? '#EAB308' : '#7E7E7E')}"
+              (click)="selectMeeting(meeting)">
+              <div class="text-white text-xs">
+                <p class="font-medium mb-1">{{ meeting.title }}</p>
+                <p class="opacity-75">{{ meeting.date }}</p>
+                <p class="opacity-75">{{ meeting.time }}</p>
+              </div>
+            </div>
+            <div *ngIf="meetingHistory.length === 0" class="text-center py-4">
+              <p class="text-xs text-[#7E7E7E]">
+                Chưa có lịch họp nào
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 flex-shrink-0">
+    <button class="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-lg"
+      (click)="signOut()">
+      Sign out
+    </button>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+/* Custom scrollbar styles for meeting history section */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #7E7E7E #D9D9D9;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(217, 217, 217, 0.3);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #7E7E7E;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+/* Meeting item hover effects */
+.cursor-pointer:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effects */
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Transition for smooth animations */
+* {
+  box-sizing: border-box;
+}

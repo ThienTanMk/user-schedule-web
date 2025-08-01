@@ -1,0 +1,33 @@
+<div class="flex flex-col h-full bg-[#2E2E2E] p-8">
+  <div class="bg-white rounded-lg shadow-lg p-8 h-full flex flex-col">
+    <div class="flex-1 overflow-y-auto">
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Tiêu đề:</label>
+        <div class="p-3 border rounded-lg bg-gray-50">
+          <span class="text-gray-900">{{ displayTitle }}</span>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Ngày:</label>
+        <div class="p-3 border rounded-lg bg-gray-50">
+          <span class="text-gray-900">{{ displayDate }}</span>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian:</label>
+        <div class="p-3 border rounded-lg bg-gray-50">
+          <span class="text-gray-900">{{ displayTime }}</span>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Nội dung:</label>
+        <div class="p-4 border rounded-lg bg-gray-50 min-h-[200px]">
+          <p class="text-gray-900 leading-relaxed">{{ displayContent }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

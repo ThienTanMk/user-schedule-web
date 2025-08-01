@@ -1,0 +1,28 @@
+<div class="flex h-screen">
+  <div class="flex-shrink-0">
+    <app-sidebar-user
+      [userImage]="currentUserImage"
+      [userEmail]="currentUserEmail"
+      (meetingSelected)="onMeetingSelected($event)"
+      (signOutClicked)="onSignOut()">
+    </app-sidebar-user>
+  </div>
+
+  <div class="flex-1 bg-[#2E2E2E] overflow-hidden">
+    <div *ngIf="!selectedMeeting" class="flex items-center justify-center h-full">
+      <div class="text-center">
+        <h1 class="text-4xl font-light text-white mb-4">
+          Xin chào {{ currentUserEmail }}
+        </h1>
+      </div>
+    </div>
+    <app-user-detail-schedule
+      *ngIf="selectedMeeting"
+      [selectedMeeting]="selectedMeeting"
+      [userImage]="currentUserImage"
+      [userEmail]="currentUserEmail"
+      (signOutClicked)="onSignOut()"
+      class="h-full">
+    </app-user-detail-schedule>
+  </div>
+</div>

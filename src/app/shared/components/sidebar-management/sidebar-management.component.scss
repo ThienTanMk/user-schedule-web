@@ -1,0 +1,77 @@
+ .active-menu-item {
+   opacity: 1;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ .inactive-menu-item {
+   opacity: 0.9;
+ }
+
+ .inactive-menu-item:hover {
+   opacity: 1;
+ }
+
+ .meeting-history::-webkit-scrollbar {
+   width: 4px;
+ }
+
+ .meeting-history::-webkit-scrollbar-track {
+   background: #D9D9D9;
+   border-radius: 2px;
+ }
+
+ .meeting-history::-webkit-scrollbar-thumb {
+   background: #7E7E7E;
+   border-radius: 2px;
+ }
+
+ .meeting-history::-webkit-scrollbar-thumb:hover {
+   background: #6E6E6E;
+ }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #7E7E7E #D9D9D9;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(217, 217, 217, 0.3);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #7E7E7E;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+/* Active menu item styles */
+.active-menu-item {
+  background-color: #06b6d4 !important;
+  color: white !important;
+}
+
+.inactive-menu-item {
+  background-color: #FFFFFF;
+  color: #212121;
+}
+
+.inactive-menu-item:hover {
+  background-color: #f3f4f6;
+}
