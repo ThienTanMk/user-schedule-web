@@ -5,17 +5,18 @@ import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { JwtPayload } from '../models/jwt-payload.model';
 import { ApiResponse } from '../models/api-response.model';
 import { Router } from '@angular/router';
-import { UserResponse } from '../models/user.model';
+import { ChangePasswordRequest, UserCreationRequest, UserResponse, UserUpdateRequest } from '../models/user.model';
+import { RoleType } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
- private apiUrl = 'http://localhost:8080/users';
+  private apiUrl = 'http://localhost:8080/users';
   private tokenKey = 'auth_token';
   private userKey = 'current_user';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(request: LoginRequest): Observable<ApiResponse<TokenResponse>> {
     return this.http.post<ApiResponse<TokenResponse>>(`${this.apiUrl}/login`, request).pipe(
@@ -72,6 +73,22 @@ export class AuthService {
     return user ? JSON.parse(user) : null;
   }
 
+  getUserRole(keycloakId: string): RoleType | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.sub === keycloakId) {
+      const roles = decodedToken.realm_access?.roles || [];
+      if (roles.includes(RoleType.MANAGER) || roles.includes(RoleType.ADMIN)) {
+        return RoleType.MANAGER;
+      } else if (roles.includes(RoleType.USER)) {
+        return RoleType.USER;
+      }
+    }
+    return null;
+  }
+
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
@@ -86,10 +103,38 @@ export class AuthService {
     return decodedToken?.realm_access?.roles.includes('USER') || false;
   }
 
+  isManager(): boolean {
+    const decodedToken: JwtPayload | null = this.decodeToken();
+    return decodedToken?.realm_access?.roles.includes('MANAGER') || false;
+  }
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
     this.router.navigate(['/login']);
   }
 
+  registerUser(request: UserCreationRequest): Observable<ApiResponse<UserResponse>> {
+    return this.http.post<ApiResponse<UserResponse>>(`${this.apiUrl}/register`, request);
+  }
+
+  getUsers(): Observable<ApiResponse<UserResponse[]>> {
+    return this.http.get<ApiResponse<UserResponse[]>>(`${this.apiUrl}/all`);
+  }
+
+  getMyProfile(): Observable<ApiResponse<UserResponse>> {
+    return this.http.get<ApiResponse<UserResponse>>(`${this.apiUrl}/my-profile`);
+  }
+
+  getUser(keycloakId: string): Observable<ApiResponse<UserResponse>> {
+    return this.http.get<ApiResponse<UserResponse>>(`${this.apiUrl}/${keycloakId}`);
+  }
+
+  updateProfile(keycloakId: string, request: UserUpdateRequest): Observable<ApiResponse<UserResponse>> {
+    return this.http.put<ApiResponse<UserResponse>>(`${this.apiUrl}/${keycloakId}`, request);
+  }
+
+  changePassword(userId: string, request: ChangePasswordRequest): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${userId}/change-password`, request);
+  }
 }

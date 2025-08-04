@@ -10,7 +10,29 @@ export interface UserResponse {
 }
 
 export interface DepartmentResponse {
-  id: number;
+  departmentId: string;
   name: string;
-  description?: string;
+}
+
+export interface UserCreationRequest {
+  username: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  dob: string;
+  departmentId?: number;
+  email: string;
+}
+
+
+export interface UserUpdateRequest {
+  firstname: string;
+  lastname: string;
+  dob: string;
+  departmentId?: number;
+}
+
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
 }

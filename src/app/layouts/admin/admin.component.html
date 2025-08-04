@@ -1,25 +1,15 @@
 <div class="flex h-screen">
   <div class="flex-shrink-0">
     <app-sidebar-management
-      [userImage]="currentUserImage"
       [userEmail]="currentUserEmail"
       [activeMenuItem]="activeMenuItem"
       (menuItemSelected)="onMenuItemSelected($event)"
-      (historyItemSelected)="onHistoryItemSelected($event)"
       (signOutClicked)="onSignOut()"
     >
     </app-sidebar-management>
   </div>
 
   <div class="flex-1 overflow-hidden p-4">
-    <div
-      *ngIf="activeMenuItem === '' && !selectedConversation"
-      class="flex items-center justify-center h-full"
-    >
-      <div class="text-center">
-        <h1 class="text-4xl font-light text-white mb-4">Xin chào ....</h1>
-      </div>
-    </div>
 
     <app-chatbot
       *ngIf="activeMenuItem === 'agent'"
@@ -29,11 +19,11 @@
       *ngIf="activeMenuItem === 'create-account'"
       class="h-full"
     ></app-create-account>
-    <app-conversation-history
+    <!-- <app-conversation-history
       *ngIf="selectedConversation"
       [conversationData]="selectedConversation"
       class="h-full"
     >
-    </app-conversation-history>
+    </app-conversation-history> -->
   </div>
 </div>

@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { HistoryItem } from '../../shared/components/sidebar-management/sidebar-management.component';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -8,21 +7,16 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })
-export class AdminComponent {
-  currentUserImage = '';
-  currentUserEmail = 'admin@example.com';
+export class AdminComponent implements OnInit{
   activeMenuItem = '';
-  selectedConversation: HistoryItem | null = null;
+  currentUserEmail = '';
   constructor(private authService: AuthService) {}
-  onMenuItemSelected(menuItem: string) {
-    console.log(menuItem);
-    this.activeMenuItem = menuItem;
-    this.selectedConversation = null;
+  ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    this.currentUserEmail = user?.email || 'manage@gmail.com';
   }
-
-  onHistoryItemSelected(historyItem: HistoryItem) {
-    this.selectedConversation = historyItem;
-    this.activeMenuItem = '';
+  onMenuItemSelected(menuItem: string) {
+    this.activeMenuItem = menuItem;
   }
 
   onSignOut(): void {

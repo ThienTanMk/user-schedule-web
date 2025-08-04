@@ -1,73 +1,90 @@
-import { Component } from '@angular/core';
+import { ApiResponse } from './../../../core/models/api-response.model';
+import { RoleType } from './../../../core/models/role.model';
+import { DepartmentResponse } from './../../../core/models/department.model';
+import { UserResponse, UserCreationRequest } from './../../../core/models/user.model';
+import { AuthService } from './../../../core/services/auth.service';
+import { DepartmentService } from './../../../core/services/department.service';
+import { Component, OnInit } from '@angular/core';
+
 interface User {
-  id: number;
-  fullName: string;
+  userId: number;
+  keycloakId: string;
+  username: string;
+  firstname: string;
+  lastname: string;
+  dob: string;
   email: string;
-  role: 'user' | 'admin';
-  status: 'active' | 'inactive';
-  createdDate: string;
+  department: DepartmentResponse | null;
+  role: RoleType;
 }
+
 @Component({
   selector: 'app-create-account',
   standalone: false,
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss'
 })
-export class CreateAccountComponent {
+export class CreateAccountComponent implements OnInit {
   searchTerm: string = '';
   confirmPassword: string = '';
-
-  newUser = {
-    fullName: '',
-    email: '',
+  departments: DepartmentResponse[] = [];
+  users: User[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
+  isLoading: boolean = false;
+  RoleType = RoleType;
+  newUser: UserCreationRequest & { role?: RoleType } = {
+    username: '',
     password: '',
-    role: 'user' as 'user' | 'admin',
-    department: ''
+    firstname: '',
+    lastname: '',
+    dob: '',
+    email: '',
+    departmentId: undefined,
+    role: RoleType.USER
   };
 
-  users: User[] = [
-    {
-      id: 1,
-      fullName: 'Nguyễn Văn A',
-      email: 'nguyenvana@example.com',
-      role: 'user',
-      status: 'active',
-      createdDate: '2025-07-20'
-    },
-    {
-      id: 2,
-      fullName: 'Trần Thị B',
-      email: 'tranthib@example.com',
-      role: 'admin',
-      status: 'active',
-      createdDate: '2025-07-19'
-    },
-    {
-      id: 3,
-      fullName: 'Lê Văn C',
-      email: 'levanc@example.com',
-      role: 'user',
-      status: 'inactive',
-      createdDate: '2025-07-18'
-    }
-  ];
+  constructor(
+    private departmentService: DepartmentService,
+    private authService: AuthService
+  ) {}
 
-  stats = {
-    totalUsers: 156,
-    activeUsers: 142,
-    adminUsers: 8,
-    newToday: 3
-  };
+  ngOnInit(): void {
+    this.loadDepartments();
+    this.loadUsers();
+  }
 
-  get filteredUsers(): User[] {
-    if (!this.searchTerm) {
-      return this.users;
-    }
+  loadDepartments(): void {
+    this.departmentService.getAllDepartments().subscribe({
+      next: (response: ApiResponse<DepartmentResponse[]>) => {
+        if (response.data) {
+          this.departments = response.data;
+        } else {
+          this.errorMessage = response.message || 'Không thể tải danh sách phòng ban';
+        }
+      },
+    });
+  }
 
-    return this.users.filter(user =>
-      user.fullName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  loadUsers(): void {
+    this.users = [];
+    this.authService.getUsers().subscribe({
+      next: (userResponse: ApiResponse<UserResponse[]>) => {
+        if (userResponse.data) {
+          this.users = userResponse.data.map((user: UserResponse) => ({
+            ...user,
+            role: this.determineUserRole(user.keycloakId)
+          }));
+        } else {
+          this.errorMessage = userResponse.message || 'Không thể tải danh sách người dùng';
+        }
+      },
+    });
+  }
+
+  determineUserRole(keycloakId: string): RoleType {
+    const role = this.authService.getUserRole(keycloakId);
+    return role || RoleType.USER;
   }
 
   isValidEmail(email: string): boolean {
@@ -75,57 +92,136 @@ export class CreateAccountComponent {
     return emailRegex.test(email);
   }
 
-  canCreateAccount(): boolean {
-    return this.newUser.fullName.trim() !== '' &&
-           this.newUser.email.trim() !== '' &&
-           this.isValidEmail(this.newUser.email) &&
-           this.newUser.password.length >= 8 &&
-           this.newUser.password === this.confirmPassword;
+  isValidDate(dob: string): boolean {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(dob)) return false;
+    const date = new Date(dob);
+    return date instanceof Date && !isNaN(date.getTime());
   }
 
-  createAccount() {
-    if (this.canCreateAccount()) {
-      const user: User = {
-        id: Date.now(),
-        fullName: this.newUser.fullName,
-        email: this.newUser.email,
-        role: this.newUser.role,
-        status: 'active',
-        createdDate: new Date().toISOString().split('T')[0]
-      };
+  getValidationErrors(): string[] {
+    const errors: string[] = [];
 
-      this.users.unshift(user);
-      this.clearForm();
-
-      console.log('Account created:', user);
+    if (!this.newUser.username?.trim()) {
+      errors.push('Tên đăng nhập không được để trống');
     }
+
+    if (!this.newUser.firstname?.trim()) {
+      errors.push('Họ không được để trống');
+    }
+
+    if (!this.newUser.lastname?.trim()) {
+      errors.push('Tên không được để trống');
+    }
+
+    if (!this.newUser.dob?.trim()) {
+      errors.push('Ngày sinh không được để trống');
+    } else if (!this.isValidDate(this.newUser.dob)) {
+      errors.push('Ngày sinh không hợp lệ (định dạng: YYYY-MM-DD)');
+    }
+
+    if (!this.newUser.email?.trim()) {
+      errors.push('Email không được để trống');
+    } else if (!this.isValidEmail(this.newUser.email)) {
+      errors.push('Email không hợp lệ');
+    }
+
+    if (!this.newUser.password?.trim()) {
+      errors.push('Mật khẩu không được để trống');
+    } else if (this.newUser.password.length < 8) {
+      errors.push('Mật khẩu phải có ít nhất 8 ký tự');
+    }
+
+    if (!this.confirmPassword?.trim()) {
+      errors.push('Xác nhận mật khẩu không được để trống');
+    } else if (this.newUser.password !== this.confirmPassword) {
+      errors.push('Mật khẩu xác nhận không khớp');
+    }
+
+    if (this.newUser.departmentId === undefined || this.newUser.departmentId === null) {
+      errors.push('Vui lòng chọn phòng ban');
+    }
+
+    if (!this.newUser.role) {
+      errors.push('Vui lòng chọn vai trò');
+    }
+
+    return errors;
   }
 
-  clearForm() {
+  canCreateAccount(): boolean {
+    return this.getValidationErrors().length === 0;
+  }
+
+  createAccount(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const validationErrors = this.getValidationErrors();
+    if (validationErrors.length > 0) {
+      this.errorMessage = validationErrors.join('; ');
+      window.alert('Lỗi: ' + this.errorMessage);
+      return;
+    }
+
+    this.isLoading = true;
+
+    const departmentId = typeof this.newUser.departmentId === 'string'
+      ? parseInt(this.newUser.departmentId, 10)
+      : this.newUser.departmentId;
+
+    const userRequest: UserCreationRequest = {
+      username: this.newUser.username.trim(),
+      password: this.newUser.password,
+      firstname: this.newUser.firstname.trim(),
+      lastname: this.newUser.lastname.trim(),
+      dob: this.newUser.dob,
+      email: this.newUser.email.trim(),
+      departmentId: departmentId
+    };
+
+    this.authService.registerUser(userRequest).subscribe({
+      next: (response: ApiResponse<UserResponse>) => {
+
+        if (response.data) {
+          window.alert('Tạo tài khoản thành công');
+          this.clearForm();
+          this.loadUsers();
+        } else {
+          this.errorMessage = response.message || 'Lỗi khi tạo tài khoản - không có dữ liệu trả về';
+          window.alert('Lỗi: ' + this.errorMessage);
+        }
+        this.isLoading = false;
+      },
+
+    });
+  }
+
+  clearForm(): void {
     this.newUser = {
-      fullName: '',
-      email: '',
+      username: '',
       password: '',
-      role: 'user',
-      department: ''
+      firstname: '',
+      lastname: '',
+      dob: '',
+      email: '',
+      departmentId: undefined,
+      role: RoleType.USER
     };
     this.confirmPassword = '';
+    this.errorMessage = '';
+    this.successMessage = '';
   }
 
-  editUser(user: User) {
-    console.log('Editing user:', user);
-  }
-
-  toggleUserStatus(user: User) {
-    user.status = user.status === 'active' ? 'inactive' : 'active';
-    console.log('User status toggled:', user);
-  }
-
-  deleteUser(user: User) {
-    const index = this.users.findIndex(u => u.id === user.id);
-    if (index > -1) {
-      this.users.splice(index, 1);
-      console.log('User deleted:', user);
+  get filteredUsers(): User[] {
+    if (!this.searchTerm) {
+      return this.users;
     }
+    return this.users.filter(user =>
+      user.username.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      user.firstname.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      user.lastname.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 }
