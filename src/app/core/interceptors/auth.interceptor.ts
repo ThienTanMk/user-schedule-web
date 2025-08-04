@@ -13,22 +13,23 @@ import { AuthService } from '../services/auth.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private authService: AuthService) { }
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('auth_token'); // Retrieve the token from localStorage (or other storage mechanism)
+    const token = this.authService.getToken();
+    let authReq = request;
     if (token) {
-      // Clone the request to add the authorization header
-      request = request.clone({
+      authReq = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
     }
-
-    return next.handle(request);
+    console.log('Request URL:', authReq.urlWithParams);
+    console.log('Authorization Header:', authReq.headers.get('Authorization'));
+    return next.handle(authReq);
   }
 }

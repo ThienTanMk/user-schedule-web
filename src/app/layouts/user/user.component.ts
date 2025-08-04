@@ -1,36 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-export interface Meeting {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  content: string;
-  isRead: boolean;
-}
+import { ScheduleResponse } from '../../core/models/schedule.model';
+
 @Component({
   selector: 'app-user',
   standalone: false,
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent {
- currentUserImage: string = '';
+export class UserComponent implements OnInit{
   currentUserEmail: string = '';
-
- selectedMeeting: Meeting | null = null;
+  selectedMeeting: ScheduleResponse | null = null;
   showDetailSchedule: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router) {
+  }
 
-  onMeetingSelected(meeting: Meeting): void {
-    this.selectedMeeting = meeting;
-    this.showDetailSchedule = true;
+  ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    this.currentUserEmail = user?.email || 'user@gmail.com';
   }
 
   onSignOut(): void {
     this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  onMeetingSelected(meeting: ScheduleResponse): void {
+    this.selectedMeeting = meeting;
+    this.showDetailSchedule = true;
   }
 
   onBackToMain(): void {

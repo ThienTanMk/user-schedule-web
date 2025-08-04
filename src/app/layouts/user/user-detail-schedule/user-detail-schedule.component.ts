@@ -1,13 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ScheduleResponse } from '../../../core/models/schedule.model';
 
-export interface Meeting {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  content: string;
-  isRead: boolean;
-}
 @Component({
   selector: 'app-user-detail-schedule',
   standalone: false,
@@ -15,18 +8,17 @@ export interface Meeting {
   styleUrl: './user-detail-schedule.component.scss'
 })
 export class UserDetailScheduleComponent {
-@Input() selectedMeeting: Meeting | null = null;
-  @Input() userImage: string = '';
+  @Input() selectedMeeting: ScheduleResponse | null = null;
   @Input() userEmail: string = '';
   @Output() signOutClicked = new EventEmitter<void>();
 
-  constructor() {}
+  constructor() { }
 
   onSignOut() {
     this.signOutClicked.emit();
   }
 
-  onMeetingSelected(meeting: Meeting) {
+  onMeetingSelected(meeting: ScheduleResponse) {
     this.selectedMeeting = meeting;
   }
 
@@ -35,14 +27,33 @@ export class UserDetailScheduleComponent {
   }
 
   get displayDate(): string {
-    return this.selectedMeeting?.date || '';
+    const startTime = this.selectedMeeting ? new Date(this.selectedMeeting.startTime) : null;
+    return startTime ? this.formatDate(startTime) : '';
   }
 
   get displayTime(): string {
-    return this.selectedMeeting?.time || '';
+    if (!this.selectedMeeting) return '';
+    const startTime = new Date(this.selectedMeeting.startTime);
+    const endTime = new Date(this.selectedMeeting.endTime);
+    return `${this.formatTime(startTime)} - ${this.formatTime(endTime)}`;
+  }
+  private formatDate(date: Date): string {
+    return date.toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).replace(/\//g, '/');
   }
 
-  get displayContent(): string {
-    return this.selectedMeeting?.content || 'Vui lòng chọn một cuộc họp từ danh sách để xem chi tiết.';
+  private formatTime(date: Date): string {
+    return date.toLocaleTimeString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  }
+
+  get displayRoom(): string {
+    return this.selectedMeeting?.room?.name || '';
   }
 }
