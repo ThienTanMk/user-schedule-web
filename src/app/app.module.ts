@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ChatbotComponent } from './layouts/admin/chatbot/chatbot.component';
+import { RoomComponent } from './layouts/admin/room/room.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ChatbotComponent } from './layouts/admin/chatbot/chatbot.component';
     UserDetailScheduleComponent,
     CreateAccountComponent,
     ChatbotComponent,
+    RoomComponent,
   ],
   imports: [
     BrowserModule,
