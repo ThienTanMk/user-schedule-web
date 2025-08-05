@@ -13,7 +13,7 @@
           <p class="text-sm font-medium text-gray-900 truncate">
             {{ userEmail }}
           </p>
-          <p class="text-xs text-gray-500">Administrator</p>
+          <p class="text-xs text-gray-500">{{ isManager ? 'Manager' : 'Administrator' }}</p>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@
       </button>
 
       <button
+        *ngIf="!isManager"
         class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'create-account'

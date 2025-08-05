@@ -7,6 +7,7 @@ import { AdminComponent } from './layouts/admin/admin.component';
 import { CreateAccountComponent } from './layouts/admin/create-account/create-account.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
+import { ManagerGuard } from './core/guards/manager.guard';
 const routes: Routes = [
   {
     path: '',
@@ -28,6 +29,11 @@ const routes: Routes = [
     canActivate: [AdminGuard],
     component: AdminComponent,
     children: [{ path: 'create-account', component: CreateAccountComponent }],
+  },
+  {
+    path: 'manager',
+    canActivate: [ManagerGuard],
+    component: AdminComponent,
   },
 ];
 @NgModule({

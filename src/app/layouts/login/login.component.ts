@@ -79,6 +79,8 @@ export class LoginComponent implements OnInit {
   private redirectBasedOnRole(): void {
     if (this.authService.isAdmin()) {
       this.router.navigate(['/admin']);
+    } else if (this.authService.isManager()) {
+      this.router.navigate(['/manager']);
     } else if (this.authService.isUser()) {
       this.router.navigate(['/user']);
     } else {

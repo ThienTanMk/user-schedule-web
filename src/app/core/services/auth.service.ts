@@ -80,7 +80,9 @@ export class AuthService {
     const decodedToken = this.decodeToken();
     if (decodedToken && decodedToken.sub === keycloakId) {
       const roles = decodedToken.realm_access?.roles || [];
-      if (roles.includes(RoleType.MANAGER) || roles.includes(RoleType.ADMIN)) {
+      if (roles.includes(RoleType.ADMIN)) {
+        return RoleType.ADMIN;
+      } else if (roles.includes(RoleType.MANAGER)) {
         return RoleType.MANAGER;
       } else if (roles.includes(RoleType.USER)) {
         return RoleType.USER;

@@ -17,7 +17,7 @@ export class AdminComponent implements OnInit{
     private router: Router) {}
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
-    this.currentUserEmail = user?.email || 'manage@gmail.com';
+    this.currentUserEmail = user?.email || 'admin@gmail.com';
   }
   onMenuItemSelected(menuItem: string) {
     if (menuItem === 'calendar') {
