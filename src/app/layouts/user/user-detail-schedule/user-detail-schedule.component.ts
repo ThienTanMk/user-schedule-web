@@ -56,4 +56,8 @@ export class UserDetailScheduleComponent {
   get displayRoom(): string {
     return this.selectedMeeting?.room?.name || '';
   }
+
+  get displayLocation(): string {
+    return this.selectedMeeting?.room?.location || '';
+  }
 }

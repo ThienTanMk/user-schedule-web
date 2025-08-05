@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ScheduleService } from '../../../core/services/schedule.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ScheduleResponse } from '../../../core/models/schedule.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-sidebar-user',
   standalone: false,
@@ -10,18 +11,23 @@ import { ScheduleResponse } from '../../../core/models/schedule.model';
 })
 export class SidebarUserComponent implements OnInit {
   @Input() userEmail: string = '';
+  @Input() activeMenuItem: string = '';
+  @Output() menuItemSelected = new EventEmitter<string>();
   @Output() meetingSelected = new EventEmitter<ScheduleResponse>();
   @Output() signOutClicked = new EventEmitter<void>();
   showMeetingHistory: boolean = true;
   selectedMeetingId: string = '';
   meetingHistory: ScheduleResponse[] = [];
+  fromAdmin: boolean = false;
   private readonly READ_MEETINGS_KEY = 'read_meetings';
   constructor(
     private scheduleService: ScheduleService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.fromAdmin = !!history.state.fromAdmin;
     const user = this.authService.getCurrentUser();
     if (user?.keycloakId) {
       this.loadMeetingHistory(user.keycloakId);
@@ -88,7 +94,17 @@ export class SidebarUserComponent implements OnInit {
       meeting.isRead = true;
       this.saveReadMeetings(meeting.scheduleId.toString());
     }
+    this.menuItemSelected.emit('');
     this.meetingSelected.emit(meeting);
+  }
+
+  selectMenuItem(menuId: string): void {
+    this.selectedMeetingId = '';
+    this.menuItemSelected.emit(menuId);
+  }
+
+  goBackToAdmin(): void {
+    this.router.navigate(['/admin']);
   }
 
   signOut(): void {

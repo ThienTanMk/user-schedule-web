@@ -2,6 +2,8 @@
   <div class="flex-shrink-0">
     <app-sidebar-user
       [userEmail]="currentUserEmail"
+      [activeMenuItem]="activeMenuItem"
+      (menuItemSelected)="onMenuItemSelected($event)"
       (meetingSelected)="onMeetingSelected($event)"
       (signOutClicked)="onSignOut()"
     >
@@ -10,7 +12,7 @@
 
   <div class="flex-1 bg-[#2E2E2E] overflow-hidden">
     <div
-      *ngIf="!selectedMeeting"
+      *ngIf="!selectedMeeting && activeMenuItem !== 'agent'"
       class="flex items-center justify-center h-full"
     >
       <div class="text-center">
@@ -19,6 +21,10 @@
         </h1>
       </div>
     </div>
+    <app-chatbot
+      *ngIf="activeMenuItem === 'agent'"
+      class="h-full"
+    ></app-chatbot>
     <app-user-detail-schedule
       *ngIf="selectedMeeting"
       [selectedMeeting]="selectedMeeting"

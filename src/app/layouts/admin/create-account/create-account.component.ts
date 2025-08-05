@@ -150,7 +150,18 @@ export class CreateAccountComponent implements OnInit {
   }
 
   canCreateAccount(): boolean {
-    return this.getValidationErrors().length === 0;
+    console.log('Validation errors:', this.getValidationErrors());
+    //return this.getValidationErrors().length === 0;
+    return !!this.newUser.username?.trim() &&
+         !!this.newUser.firstname?.trim() &&
+         !!this.newUser.lastname?.trim() &&
+         !!this.newUser.dob?.trim() &&
+         !!this.newUser.email?.trim() &&
+         !!this.newUser.password?.trim() &&
+         !!this.confirmPassword?.trim() &&
+         this.newUser.departmentId !== undefined &&
+         this.newUser.departmentId !== null &&
+         !!this.newUser.role;
   }
 
   createAccount(): void {
@@ -193,7 +204,6 @@ export class CreateAccountComponent implements OnInit {
         }
         this.isLoading = false;
       },
-
     });
   }
 

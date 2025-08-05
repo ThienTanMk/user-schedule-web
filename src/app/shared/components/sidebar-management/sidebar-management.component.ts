@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ScheduleResponse } from '../../../core/models/schedule.model';
 
 @Component({
   selector: 'app-sidebar-management',

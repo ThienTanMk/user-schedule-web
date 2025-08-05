@@ -13,7 +13,7 @@ export class UserComponent implements OnInit{
   currentUserEmail: string = '';
   selectedMeeting: ScheduleResponse | null = null;
   showDetailSchedule: boolean = false;
-
+  activeMenuItem: string = '';
   constructor(
     private authService: AuthService,
     private router: Router) {
@@ -32,10 +32,16 @@ export class UserComponent implements OnInit{
   onMeetingSelected(meeting: ScheduleResponse): void {
     this.selectedMeeting = meeting;
     this.showDetailSchedule = true;
+    this.activeMenuItem = '';
   }
 
   onBackToMain(): void {
     this.showDetailSchedule = false;
+    this.selectedMeeting = null;
+  }
+
+  onMenuItemSelected(menuItem: string): void {
+    this.activeMenuItem = menuItem;
     this.selectedMeeting = null;
   }
 }

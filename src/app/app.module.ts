@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ConversationHistoryComponent } from './layouts/admin/conversation-history/conversation-history.component';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { LoginComponent } from './layouts/login/login.component';
 import { UserComponent } from './layouts/user/user.component';
@@ -17,7 +16,6 @@ import { ChatbotComponent } from './layouts/admin/chatbot/chatbot.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ConversationHistoryComponent,
     AdminComponent,
     LoginComponent,
     UserComponent,

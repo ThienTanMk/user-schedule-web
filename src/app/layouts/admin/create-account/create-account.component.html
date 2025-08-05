@@ -13,7 +13,7 @@
             placeholder="Nhập tên đăng nhập..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="newUser.username"
-            [class.border-red-500]="!newUser.username?.trim() && errorMessage"
+            [class.border-red-500]="!newUser.username.trim() && errorMessage"
           />
         </div>
 
@@ -26,7 +26,7 @@
             placeholder="Nhập họ..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="newUser.firstname"
-            [class.border-red-500]="!newUser.firstname?.trim() && errorMessage"
+            [class.border-red-500]="!newUser.firstname.trim() && errorMessage"
           />
         </div>
 
@@ -39,13 +39,13 @@
             placeholder="Nhập tên..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="newUser.lastname"
-            [class.border-red-500]="!newUser.lastname?.trim() && errorMessage"
+            [class.border-red-500]="!newUser.lastname.trim() && errorMessage"
           />
         </div>
 
         <div class="mb-3">
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Ngày sinh (YYYY-MM-DD) <span class="text-red-500">*</span>
+            Ngày sinh <span class="text-red-500">*</span>
           </label>
           <input
             type="date"
@@ -70,7 +70,7 @@
             placeholder="Nhập email..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="newUser.email"
-            [class.border-red-500]="(!newUser.email?.trim() || !isValidEmail(newUser.email)) && errorMessage"
+            [class.border-red-500]="(!newUser.email.trim() || !isValidEmail(newUser.email)) && errorMessage"
           />
           <div
             *ngIf="newUser.email && !isValidEmail(newUser.email)"
@@ -89,7 +89,7 @@
             placeholder="Nhập mật khẩu..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="newUser.password"
-            [class.border-red-500]="(!newUser.password?.trim() || newUser.password.length < 8) && errorMessage"
+            [class.border-red-500]="(!newUser.password.trim() || newUser.password.length < 8) && errorMessage"
           />
           <div class="text-xs text-gray-500 mt-1">
             Mật khẩu phải có ít nhất 8 ký tự
@@ -105,7 +105,7 @@
             placeholder="Nhập lại mật khẩu..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             [(ngModel)]="confirmPassword"
-            [class.border-red-500]="(!confirmPassword?.trim() || newUser.password !== confirmPassword) && errorMessage"
+            [class.border-red-500]="(!confirmPassword.trim() || newUser.password !== confirmPassword) && errorMessage"
           />
           <div
             *ngIf="confirmPassword && newUser.password !== confirmPassword"
