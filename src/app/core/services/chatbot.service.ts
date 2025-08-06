@@ -39,9 +39,10 @@ export class ChatbotService {
   }
   askChatbot(message: string, keycloakId: string): void {
     this.http
-      .post<ApiResponse<string>>(
+      .post(
         `${this.apiUrl}/conversation/ask?keycloakId=${keycloakId}`,
-        { aiMessage: message }
+        { aiMessage: message },
+        { responseType: 'text' }
       )
       .subscribe();
   }

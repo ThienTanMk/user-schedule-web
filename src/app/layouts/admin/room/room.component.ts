@@ -7,7 +7,7 @@ import { ApiResponse } from '../../../core/models/api-response.model';
   selector: 'app-room',
   standalone: false,
   templateUrl: './room.component.html',
-  styleUrl: './room.component.scss'
+  styleUrl: './room.component.scss',
 })
 export class RoomComponent implements OnInit {
   roomsByLocation: { [key: string]: (RoomResponse | RoomWithStatus)[] } = {};
@@ -18,7 +18,7 @@ export class RoomComponent implements OnInit {
   endDate: string = '';
   showAvailableRooms = false;
 
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService) {}
 
   ngOnInit(): void {
     this.loadRooms();
@@ -92,5 +92,9 @@ export class RoomComponent implements OnInit {
     this.showAvailableRooms = false;
     this.error = null;
     this.loadRooms();
+  }
+
+  hasStatus(room: any): room is RoomWithStatus {
+    return 'status' in room;
   }
 }
