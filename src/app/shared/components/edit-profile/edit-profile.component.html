@@ -1,0 +1,166 @@
+<div class="h-full bg-slate-50 p-6">
+  <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-semibold text-slate-900">Chỉnh sửa thông tin cá nhân</h2>
+      <button
+        class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-2"
+        (click)="openChangePasswordForm()"
+      >
+        <i class="fas fa-lock"></i>
+        Đổi mật khẩu
+      </button>
+    </div>
+
+    <!-- Form đổi mật khẩu -->
+    <div *ngIf="showChangePasswordForm" class="mt-6 space-y-4">
+      <form (ngSubmit)="onChangePassword()" class="space-y-4">
+        <div>
+          <label for="oldPassword" class="block text-sm font-medium text-slate-700">Mật khẩu cũ</label>
+          <div class="relative mt-1">
+            <input
+              id="oldPassword"
+              name="oldPassword"
+              [type]="showOldPassword ? 'text' : 'password'"
+              [(ngModel)]="changePasswordRequest.oldPassword"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+              placeholder="Nhập mật khẩu cũ"
+            />
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 flex items-center pr-3"
+              (click)="toggleShowOldPassword()"
+            >
+              <i [ngClass]="showOldPassword ? 'fas fa-eye' : 'fas fa-eye-slash'" class="text-slate-400 hover:text-slate-600"></i>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label for="newPassword" class="block text-sm font-medium text-slate-700">Mật khẩu mới</label>
+          <div class="relative mt-1">
+            <input
+              id="newPassword"
+              name="newPassword"
+              [type]="showNewPassword ? 'text' : 'password'"
+              [(ngModel)]="changePasswordRequest.newPassword"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+              placeholder="Nhập mật khẩu mới"
+            />
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 flex items-center pr-3"
+              (click)="toggleShowNewPassword()"
+            >
+              <i [ngClass]="showNewPassword ? 'fas fa-eye' : 'fas fa-eye-slash'" class="text-slate-400 hover:text-slate-600"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            type="submit"
+            [disabled]="loading || !canSavePassword()"
+            class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm disabled:bg-blue-400 disabled:cursor-not-allowed"
+          >
+            <span *ngIf="loading" class="inline-flex items-center gap-2">
+              <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Đang lưu...
+            </span>
+            <span *ngIf="!loading">Lưu mật khẩu</span>
+          </button>
+          <button
+            type="button"
+            class="flex-1 py-2 px-4 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition-colors text-sm"
+            (click)="closeChangePasswordForm()"
+          >
+            Hủy
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Form thông tin cá nhân -->
+    <form *ngIf="!showChangePasswordForm" class="space-y-4" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="firstname" class="block text-sm font-medium text-slate-700">Họ</label>
+        <input
+          id="firstname"
+          name="firstname"
+          type="text"
+          [(ngModel)]="updateRequest.firstname"
+          required
+          class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Nhập họ"
+        />
+      </div>
+
+      <div>
+        <label for="lastname" class="block text-sm font-medium text-slate-700">Tên</label>
+        <input
+          id="lastname"
+          name="lastname"
+          type="text"
+          [(ngModel)]="updateRequest.lastname"
+          required
+          class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Nhập tên"
+        />
+      </div>
+
+      <div>
+        <label for="dob" class="block text-sm font-medium text-slate-700">Ngày sinh</label>
+        <input
+          id="dob"
+          name="dob"
+          type="date"
+          [(ngModel)]="updateRequest.dob"
+          required
+          class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <div>
+        <label for="departmentId" class="block text-sm font-medium text-slate-700">Phòng ban</label>
+        <select
+          id="departmentId"
+          name="departmentId"
+          [(ngModel)]="updateRequest.departmentId"
+          class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="" disabled>Chọn phòng ban</option>
+          <option *ngFor="let department of departments" [value]="department.departmentId">
+            {{ department.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-4 mt-6">
+        <button
+          type="submit"
+          [disabled]="loading || !hasChanges()"
+          class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm disabled:bg-blue-400 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="loading" class="inline-flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Đang lưu...
+          </span>
+          <span *ngIf="!loading">Lưu thay đổi</span>
+        </button>
+        <button
+          type="button"
+          [disabled]="loading || !hasChanges()"
+          class="flex-1 py-2 px-4 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition-colors text-sm disabled:bg-slate-300 disabled:cursor-not-allowed"
+          (click)="cancelEdit()"
+        >
+          Hủy
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -12,7 +12,7 @@
 
   <div class="flex-1 bg-[#F9FAFB] overflow-hidden">
     <div
-      *ngIf="!selectedMeeting && activeMenuItem !== 'agent' && activeMenuItem !== 'room'"
+      *ngIf="!selectedMeeting && activeMenuItem !== 'agent' && activeMenuItem !== 'room' && activeMenuItem !== 'edit'"
       class="flex items-center justify-center h-full"
     >
       <div class="text-center">
@@ -29,6 +29,10 @@
       *ngIf="activeMenuItem === 'room'"
       class="h-full"
     ></app-room>
+    <app-edit-profile
+      *ngIf="activeMenuItem === 'edit'"
+      class="h-full"
+    ></app-edit-profile>
     <app-user-detail-schedule
       *ngIf="selectedMeeting"
       [selectedMeeting]="selectedMeeting"

@@ -72,6 +72,18 @@
         <i class="fa-solid fa-house"></i>
         <span>Xem Phòng họp</span>
       </button>
+      <button
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        [ngClass]="
+          activeMenuItem === 'edit'
+            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        "
+        (click)="selectMenuItem('edit')"
+      >
+        <i class="fa-solid fa-edit"></i>
+        <span>Chỉnh sửa thông tin</span>
+      </button>
     </nav>
 
     <!-- Sign Out -->
