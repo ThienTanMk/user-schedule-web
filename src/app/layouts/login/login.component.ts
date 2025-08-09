@@ -57,24 +57,32 @@ export class LoginComponent implements OnInit {
   }
 
   private handleLoginError(error: any): void {
-    if (error.error?.data?.code) {
-      switch (error.error.data.code) {
-        case 2200: // UNAUTHENTICATED
-          this.errorMessage = 'Tên đăng nhập hoặc mật khẩu không đúng';
-          break;
-        case 0: // Không kết nối server
-          this.errorMessage = 'Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.';
-          break;
-        case 2999: // UNCATEGORIZED
-          this.errorMessage = 'Lỗi server. Vui lòng thử lại sau.';
-          break;
-        default:
-          this.errorMessage = error.error?.message || 'Đã có lỗi xảy ra, vui lòng thử lại';
+  let message = 'Đã có lỗi xảy ra, vui lòng thử lại';
+
+  const errCode = error.error?.statusCode;
+
+  switch (errCode) {
+    case 2200: // UNAUTHENTICATED
+      message = 'Tên đăng nhập hoặc mật khẩu không đúng';
+      break;
+    case 2201: // UNAUTHORIZED
+      message = 'Bạn không có quyền truy cập';
+      break;
+    case 0: // Không kết nối server
+      message = 'Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.';
+      break;
+    case 2999: // UNCATEGORIZED
+      message = 'Lỗi server. Vui lòng thử lại sau.';
+      break;
+    default:
+      if (error.error?.message) {
+        message = error.error.message;
       }
-    } else {
-      this.errorMessage = 'Đã có lỗi xảy ra, vui lòng thử lại';
-    }
   }
+  this.errorMessage = message;
+  alert(message);
+}
+
 
   private redirectBasedOnRole(): void {
     if (this.authService.isAdmin()) {
