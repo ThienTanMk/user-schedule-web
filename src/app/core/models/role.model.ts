@@ -7,3 +7,12 @@ export enum RoleType {
 export interface AssignRoleRequest {
   roleName: RoleType;
 }
+
+export interface RoleRepresentation {
+  id: string;
+  name: string;
+  description: string;
+  composite: boolean;
+  clientRole: boolean;
+  containerId: string;
+}

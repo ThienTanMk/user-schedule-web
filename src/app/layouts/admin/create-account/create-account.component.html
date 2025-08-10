@@ -214,10 +214,11 @@
                     class="px-2 py-1 text-xs rounded-full"
                     [ngClass]="{
                       'bg-blue-100 text-blue-800': user.role === RoleType.USER,
-                      'bg-purple-100 text-purple-800': user.role === RoleType.MANAGER
+                      'bg-orange-100 text-orange-800': user.role === RoleType.MANAGER,
+                      'bg-purple-100 text-purple-800': user.role === RoleType.ADMIN
                     }"
                   >
-                    {{ user.role === RoleType.USER ? 'Nhân viên' : 'Quản lý' }}
+                    {{ user.role === RoleType.USER ? 'Nhân viên' : user.role === RoleType.MANAGER ? 'Quản lý' :'Quản trị viên' }}
                   </span>
                 </td>
               </tr>

@@ -1,5 +1,5 @@
 import { ApiResponse } from './../../../core/models/api-response.model';
-import { RoleType } from './../../../core/models/role.model';
+import { RoleRepresentation, RoleType } from './../../../core/models/role.model';
 import { DepartmentResponse } from './../../../core/models/department.model';
 import { UserResponse, UserCreationRequest } from './../../../core/models/user.model';
 import { AuthService } from './../../../core/services/auth.service';
@@ -71,21 +71,40 @@ export class CreateAccountComponent implements OnInit {
     this.authService.getUsers().subscribe({
       next: (userResponse: ApiResponse<UserResponse[]>) => {
         if (userResponse.data) {
-          this.users = userResponse.data.map((user: UserResponse) => ({
-            ...user,
-            role: this.determineUserRole(user.keycloakId)
-          }));
-        } else {
-          this.errorMessage = userResponse.message || 'Không thể tải danh sách người dùng';
-        }
+          const userDate = userResponse.data;
+          userDate.forEach(user => {
+            this.authService.getRoleUser(user.keycloakId).subscribe({
+              next: (roles: RoleRepresentation[]) => {
+                const roleName = roles.map(r => r.name)
+                let mappedRole: RoleType = RoleType.USER;//mac dinh neu ko co role
+                if (roleName.includes(RoleType.ADMIN)) {
+                  mappedRole = RoleType.ADMIN;
+                } else if (roleName.includes(RoleType.MANAGER)) {
+                  mappedRole =RoleType.MANAGER;
+                }
+                this.users.push({
+                  ...user,
+                  role: mappedRole
+                });
+              },
+              error: err => {
+                console.error('Lỗi lấy role cho user ${user.username}', err);
+                this.users.push({
+                  ...user,
+                  role: RoleType.USER
+                });
+              }
+            })
+          })
+        }else this.errorMessage = userResponse.message ||  'Không thể tải danh sách người dùng';
       },
     });
   }
 
-  determineUserRole(keycloakId: string): RoleType {
-    const role = this.authService.getUserRole(keycloakId);
-    return role || RoleType.USER;
-  }
+  // determineUserRole(keycloakId: string): RoleType {
+  //   const role = this.authService.getUserRole(keycloakId);
+  //   return role || RoleType.USER;
+  // }
 
   isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

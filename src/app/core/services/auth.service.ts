@@ -6,7 +6,7 @@ import { JwtPayload } from '../models/jwt-payload.model';
 import { ApiResponse } from '../models/api-response.model';
 import { Router } from '@angular/router';
 import { ChangePasswordRequest, UserCreationRequest, UserResponse, UserUpdateRequest } from '../models/user.model';
-import { RoleType } from '../models/role.model';
+import { RoleRepresentation, RoleType } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -73,23 +73,23 @@ export class AuthService {
     return user ? JSON.parse(user) : null;
   }
 
-  getUserRole(keycloakId: string): RoleType | null {
-    const token = this.getToken();
-    if (!token) return null;
+  // getUserRole(keycloakId: string): RoleType | null {
+  //   const token = this.getToken();
+  //   if (!token) return null;
 
-    const decodedToken = this.decodeToken();
-    if (decodedToken && decodedToken.sub === keycloakId) {
-      const roles = decodedToken.realm_access?.roles || [];
-      if (roles.includes(RoleType.ADMIN)) {
-        return RoleType.ADMIN;
-      } else if (roles.includes(RoleType.MANAGER)) {
-        return RoleType.MANAGER;
-      } else if (roles.includes(RoleType.USER)) {
-        return RoleType.USER;
-      }
-    }
-    return null;
-  }
+  //   const decodedToken = this.decodeToken();
+  //   if (decodedToken && decodedToken.sub === keycloakId) {
+  //     const roles = decodedToken.realm_access?.roles || [];
+  //     if (roles.includes(RoleType.ADMIN)) {
+  //       return RoleType.ADMIN;
+  //     } else if (roles.includes(RoleType.MANAGER)) {
+  //       return RoleType.MANAGER;
+  //     } else if (roles.includes(RoleType.USER)) {
+  //       return RoleType.USER;
+  //     }
+  //   }
+  //   return null;
+  // }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
@@ -138,5 +138,9 @@ export class AuthService {
 
   changePassword(userId: string, request: ChangePasswordRequest): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${userId}/change-password`, request);
+  }
+
+  getRoleUser(keycloakId: string): Observable<RoleRepresentation[]> {
+    return this.http.get<RoleRepresentation[]>(`${this.apiUrl}/role/${keycloakId}`)
   }
 }
