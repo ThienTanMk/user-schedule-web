@@ -4,6 +4,7 @@ import { SidebarManagementComponent } from './components/sidebar-management/side
 import { SidebarUserComponent } from './components/sidebar-user/sidebar-user.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { FormsModule } from '@angular/forms';
+import { EditRoomComponent } from './components/edit-room/edit-room.component';
 
 
 
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     SidebarManagementComponent,
     SidebarUserComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    EditRoomComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { FormsModule } from '@angular/forms';
    exports: [
     SidebarManagementComponent,
     SidebarUserComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    EditRoomComponent
   ],
 })
 export class SharedModule { }

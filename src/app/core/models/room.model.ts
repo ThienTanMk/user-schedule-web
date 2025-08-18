@@ -1,4 +1,5 @@
 export interface RoomResponse {
+  roomId: number;
   name: string;
   location: string,
   capacity: number
@@ -9,6 +10,7 @@ export interface RoomRequest {
   capacity: number
 }
 export interface RoomWithStatus {
+  roomId: number;
   name: string;
   location: string,
   capacity: number,

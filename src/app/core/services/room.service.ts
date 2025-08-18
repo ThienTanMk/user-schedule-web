@@ -24,4 +24,23 @@ export class RoomService {
     return this.http.get<ApiResponse<RoomResponse[]>>(`${this.apiUrl}/available`, { params });
   }
 
+  createRoom(request: RoomRequest): Observable<ApiResponse<RoomResponse>> {
+    return this.http.post<ApiResponse<RoomResponse>>(`${this.apiUrl}`, request);
+  }
+
+  updateRoom(id: number, request: RoomRequest): Observable<ApiResponse<RoomResponse>> {
+    return this.http.put<ApiResponse<RoomResponse>>(`${this.apiUrl}/${id}`, request);
+  }
+
+  deleteRoom(id: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  }
+
+  getAllRooms(): Observable<ApiResponse<RoomResponse[]>> {
+    return this.http.get<ApiResponse<RoomResponse[]>>(`${this.apiUrl}/all`);
+  }
+
+  getRoomById(roomId: number): Observable<ApiResponse<RoomResponse>> {
+    return this.http.get<ApiResponse<RoomResponse>>(`${this.apiUrl}/${roomId}`);
+  }
 }

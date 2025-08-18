@@ -22,55 +22,108 @@
     <nav class="px-4 py-6 space-y-2">
       <button
         *ngIf="!fromAdmin"
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium relative overflow-hidden group"
         [ngClass]="
           activeMenuItem === 'agent'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            : 'text-gray-600 border border-transparent'
         "
         (click)="selectMenuItem('agent')"
       >
-        <i class="fas fa-robot w-5 text-base"></i>
-        <span>AI Agent</span>
+        <!-- Hiệu ứng hover nền -->
+        <span
+          *ngIf="activeMenuItem !== 'agent'"
+          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
+        ></span>
+
+        <i
+          class="fas fa-robot w-5 text-base relative z-10"
+          [ngClass]="activeMenuItem === 'agent' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        ></i>
+        <span
+          class="relative z-10"
+          [ngClass]="activeMenuItem === 'agent' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        >
+          AI Agent
+        </span>
       </button>
       <button
         *ngIf="fromAdmin"
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium relative overflow-hidden group"
         [ngClass]="
           activeMenuItem === 'back'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            : 'text-gray-600 border border-transparent'
         "
         (click)="goBackToAdmin()"
       >
-        <i class="fas fa-arrow-left w-5 text-base"></i>
-        <span>Trở về</span>
+        <span
+          *ngIf="activeMenuItem !== 'back'"
+          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
+        ></span>
+
+        <i
+          class="fas fa-arrow-left w-5 text-base relative z-10"
+          [ngClass]="activeMenuItem === 'back' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        ></i>
+        <span
+          class="relative z-10"
+          [ngClass]="activeMenuItem === 'back' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        >
+          Trở về
+        </span>
       </button>
       <button
         *ngIf="!fromAdmin"
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium relative overflow-hidden group"
         [ngClass]="
           activeMenuItem === 'room'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            : 'text-gray-600 border border-transparent'
         "
         (click)="selectMenuItem('room')"
       >
-        <i class="fa-solid fa-house"></i>
-        <span>Xem Phòng họp</span>
+        <span
+          *ngIf="activeMenuItem !== 'room'"
+          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
+        ></span>
+
+        <i
+          class="fa-solid fa-house relative z-10"
+          [ngClass]="activeMenuItem === 'room' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        ></i>
+        <span
+          class="relative z-10"
+          [ngClass]="activeMenuItem === 'room' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        >
+          Xem Phòng họp
+        </span>
       </button>
       <button
         *ngIf="!fromAdmin"
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium relative overflow-hidden group"
         [ngClass]="
           activeMenuItem === 'edit'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            : 'text-gray-600 border border-transparent'
         "
         (click)="selectMenuItem('edit')"
       >
-        <i class="fa-solid fa-edit"></i>
-        <span>Chỉnh sửa thông tin</span>
+        <span
+          *ngIf="activeMenuItem !== 'edit'"
+          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
+        ></span>
+
+        <i
+          class="fa-solid fa-edit relative z-10"
+          [ngClass]="activeMenuItem === 'edit' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        ></i>
+        <span
+          class="relative z-10"
+          [ngClass]="activeMenuItem === 'edit' ? 'text-blue-700' : 'group-hover:text-white transition-colors duration-300'"
+        >
+          Chỉnh sửa thông tin
+        </span>
       </button>
     </nav>
 
