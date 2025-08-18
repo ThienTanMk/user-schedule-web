@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked,ViewChild, ElementRef,} from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 
@@ -8,7 +8,7 @@ import { ChatbotService } from '../../../core/services/chatbot.service';
   templateUrl: './chatbot.component.html',
   styleUrl: './chatbot.component.scss',
 })
-export class ChatbotComponent implements OnInit {
+export class ChatbotComponent implements OnInit, AfterViewChecked {
   isTyping = false;
   messages: Array<{ text: string; isUser: boolean }> = [];
   currentMessage: string = '';
@@ -16,6 +16,7 @@ export class ChatbotComponent implements OnInit {
     private authService: AuthService,
     private chatbotService: ChatbotService
   ) {}
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   ngOnInit(): void {
     if (this.authService.getCurrentUser()?.keycloakId) {
       this.chatbotService
@@ -66,5 +67,18 @@ export class ChatbotComponent implements OnInit {
       .subscribe((data) => {
         this.messages = [];
       });
+  }
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+   private scrollToBottom(): void {
+    try {
+      if (this.messagesContainer) {
+        this.messagesContainer.nativeElement.scrollTop =
+          this.messagesContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Scroll error:', err);
+    }
   }
 }
