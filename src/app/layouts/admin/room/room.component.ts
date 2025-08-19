@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RoomResponse, RoomWithStatus } from '../../../core/models/room.model';
+import { RoomRequest, RoomResponse, RoomWithStatus } from '../../../core/models/room.model';
 import { RoomService } from '../../../core/services/room.service';
 import { ApiResponse } from '../../../core/models/api-response.model';
 import { AuthService } from '../../../core/services/auth.service';
@@ -130,7 +130,7 @@ export class RoomComponent implements OnInit {
     this.error = null;
   }
 
-  handleSave(updatedRoom: RoomResponse): void {
+  handleSave(updatedRoom: RoomRequest): void {
     if (this.isEditMode && this.selectedRoom && this.selectedRoomIndex != null && this.selectedLocation != null) {
       if (!this.selectedRoom.roomId) {
         this.error = 'Không tìm thấy ID phòng để cập nhật';
