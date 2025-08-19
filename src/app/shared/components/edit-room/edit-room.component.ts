@@ -16,6 +16,7 @@ export class EditRoomComponent {
   @Input() roomId: number | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<RoomRequest>();
+
   @Input() error: string | null = null;
   isLoading = false;
 

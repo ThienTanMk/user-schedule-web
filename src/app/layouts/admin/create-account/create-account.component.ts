@@ -1,6 +1,6 @@
 import { ApiResponse } from './../../../core/models/api-response.model';
 import { RoleRepresentation, RoleType } from './../../../core/models/role.model';
-import { DepartmentResponse } from './../../../core/models/department.model';
+import { DepartmentCreationRequest, DepartmentResponse } from './../../../core/models/department.model';
 import { UserResponse, UserCreationRequest } from './../../../core/models/user.model';
 import { AuthService } from './../../../core/services/auth.service';
 import { DepartmentService } from './../../../core/services/department.service';
@@ -28,6 +28,8 @@ export class CreateAccountComponent implements OnInit {
   searchTerm: string = '';
   confirmPassword: string = '';
   departments: DepartmentResponse[] = [];
+  showAddDepartmentForm: boolean = false;
+  newDepartmentName: string = '';
   users: User[] = [];
   errorMessage: string = '';
   successMessage: string = '';
@@ -252,5 +254,45 @@ export class CreateAccountComponent implements OnInit {
       user.lastname.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
+  }
+
+  toggleAddDepartmentForm(): void {
+    this.showAddDepartmentForm = !this.showAddDepartmentForm;
+    this.newDepartmentName = '';
+    this.errorMessage = '';
+  }
+  createDepartment(): void {
+    if (!this.newDepartmentName.trim()) {
+      this.errorMessage = 'Tên phòng ban không được để trống';
+      window.alert('Lỗi: ' + this.errorMessage);
+      return;
+    }
+
+    const departmentRequest: DepartmentCreationRequest = {
+      name: this.newDepartmentName.trim()
+    };
+
+    this.isLoading = true;
+    this.departmentService.createDepartment(departmentRequest).subscribe({
+      next: (response: ApiResponse<DepartmentResponse>) => {
+        if (response.data) {
+          this.departments.push(response.data); // Thêm phòng ban mới vào danh sách
+          this.newUser.departmentId = Number(response.data.departmentId); // Chọn phòng ban vừa tạo
+          this.toggleAddDepartmentForm(); // Đóng form
+          this.successMessage = 'Thêm phòng ban thành công';
+          window.alert(this.successMessage);
+        } else {
+          this.errorMessage = response.message || 'Lỗi khi tạo phòng ban';
+          window.alert('Lỗi: ' + this.errorMessage);
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Lỗi khi tạo phòng ban';
+        console.error(error);
+        window.alert('Lỗi: ' + this.errorMessage);
+      }
+    });
   }
 }

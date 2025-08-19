@@ -12,7 +12,7 @@
 
   <div class="flex-1 bg-[#F9FAFB] overflow-hidden">
     <div
-      *ngIf="!selectedMeeting && activeMenuItem !== 'agent' && activeMenuItem !== 'room' && activeMenuItem !== 'edit'"
+      *ngIf="!fromAdmin || !fromManager || !selectedMeeting && activeMenuItem !== 'agent' && activeMenuItem !== 'room' && activeMenuItem !== 'edit'"
       class="flex items-center justify-center h-full"
     >
       <div class="text-center">

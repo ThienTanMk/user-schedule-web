@@ -18,16 +18,20 @@ export class AdminComponent implements OnInit{
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
     this.currentUserEmail = user?.email || 'admin@gmail.com';
+    const savedMenu = localStorage.getItem('activeMenuItem');
+    this.activeMenuItem = savedMenu || 'agent';
   }
   onMenuItemSelected(menuItem: string) {
     if (menuItem === 'calendar') {
       this.router.navigate(['/user'], {state: {fromAdmin: true}});
     } else {
       this.activeMenuItem = menuItem;
+      localStorage.setItem('activeMenuItem', menuItem);
     }
   }
 
   onSignOut(): void {
     this.authService.logout();
+    localStorage.removeItem('activeMenuItem')
   }
 }

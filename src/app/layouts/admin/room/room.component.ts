@@ -21,6 +21,7 @@ export class RoomComponent implements OnInit {
   showModal = false;
   isEditMode = false;
   selectedRoom: RoomResponse | RoomWithStatus | null = null;
+  room: RoomRequest = { name: '', location: '', capacity: 0 };
   selectedRoomIndex: number | null = null;
   selectedLocation: string | null = null;
   isAdmin = false;
@@ -111,6 +112,7 @@ export class RoomComponent implements OnInit {
     this.selectedRoom = null;
     this.selectedRoomIndex = null;
     this.selectedLocation = null;
+    this.room = { name: '', location: '', capacity: 0 };
     this.showModal = true;
   }
 
@@ -119,6 +121,11 @@ export class RoomComponent implements OnInit {
     this.selectedRoom = room;
     this.selectedRoomIndex = index;
     this.selectedLocation = location;
+    this.room = {
+      name: room.name,
+      location: room.location,
+      capacity: room.capacity,
+  };
     this.showModal = true;
   }
 
@@ -127,6 +134,7 @@ export class RoomComponent implements OnInit {
     this.selectedRoom = null;
     this.selectedRoomIndex = null;
     this.selectedLocation = null;
+    this.room = { name: '', location: '', capacity: 0 };
     this.error = null;
   }
 

@@ -19,6 +19,7 @@ export class SidebarUserComponent implements OnInit {
   selectedMeetingId: string = '';
   meetingHistory: ScheduleResponse[] = [];
   fromAdmin: boolean = false;
+  fromManager: boolean = false;
   private readonly READ_MEETINGS_KEY = 'read_meetings';
   constructor(
     private scheduleService: ScheduleService,
@@ -28,6 +29,7 @@ export class SidebarUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.fromAdmin = !!history.state.fromAdmin;
+    this.fromManager = !!history.state.fromManager;
     const user = this.authService.getCurrentUser();
     if (user?.keycloakId) {
       this.loadMeetingHistory(user.keycloakId);

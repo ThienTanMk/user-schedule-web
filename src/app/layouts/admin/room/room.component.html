@@ -14,7 +14,7 @@
     <app-edit-room
       [showModal]="showModal"
       [isEditMode]="isEditMode"
-      [room]="selectedRoom ? { name: selectedRoom.name, location: selectedRoom.location, capacity: selectedRoom.capacity } : { name: '', location: '', capacity: 0 }"
+      [room]="room"
       [roomId]="selectedRoom?.roomId || null"
       [error]="error"
       (close)="closeModal()"
@@ -73,7 +73,7 @@
         <p class="text-sm text-red-600">{{ error }}</p>
       </div>
 
-      <div *ngIf="!isLoading && !error" class="space-y-8">
+      <div *ngIf="!isLoading && !error" class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div *ngFor="let location of locations" class="space-y-4">
           <h2 class="text-lg font-medium text-slate-800">{{ location }}</h2>
 

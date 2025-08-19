@@ -14,18 +14,25 @@ export class UserComponent implements OnInit{
   selectedMeeting: ScheduleResponse | null = null;
   showDetailSchedule: boolean = false;
   activeMenuItem: string = '';
+  fromAdmin: boolean = false;
+  fromManager: boolean = false;
   constructor(
     private authService: AuthService,
     private router: Router) {
   }
 
   ngOnInit(): void {
+    this.fromAdmin = !!history.state.fromAdmin;
+    this.fromManager = !!history.state.fromManager;
     const user = this.authService.getCurrentUser();
     this.currentUserEmail = user?.email || 'user@gmail.com';
+    const savedMenu = localStorage.getItem('activeMenuItem');
+    this.activeMenuItem = savedMenu || 'agent';
   }
 
   onSignOut(): void {
     this.authService.logout();
+    localStorage.removeItem('activeMenuItem')
     this.router.navigate(['/login']);
   }
 
@@ -42,6 +49,7 @@ export class UserComponent implements OnInit{
 
   onMenuItemSelected(menuItem: string): void {
     this.activeMenuItem = menuItem;
+    localStorage.setItem('activeMenuItem', menuItem);
     this.selectedMeeting = null;
   }
 }
