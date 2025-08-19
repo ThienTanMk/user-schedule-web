@@ -148,6 +148,10 @@ export class RoomComponent implements OnInit {
           this.closeModal();
           this.loadRooms();
         },
+        error: (err) => {
+          this.isLoading = false;
+          this.error = err.error?.message || 'Đã có lỗi xảy ra khi chỉnh sửa phòng';
+        },
       });
     } else {
       this.roomService.createRoom(updatedRoom).subscribe({
@@ -163,6 +167,10 @@ export class RoomComponent implements OnInit {
           });
           this.closeModal();
           this.loadRooms();
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.error = err.error?.message || 'Đã có lỗi xảy ra khi tạo phòng';
         },
       });
     }

@@ -16,6 +16,7 @@
       [isEditMode]="isEditMode"
       [room]="selectedRoom ? { name: selectedRoom.name, location: selectedRoom.location, capacity: selectedRoom.capacity } : { name: '', location: '', capacity: 0 }"
       [roomId]="selectedRoom?.roomId || null"
+      [error]="error"
       (close)="closeModal()"
       (save)="handleSave($event)"
     ></app-edit-room>

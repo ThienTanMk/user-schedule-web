@@ -21,133 +21,68 @@
     <!-- Navigation -->
     <nav class="flex-1 px-4 py-6 space-y-2">
       <button
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors relative overflow-hidden group"
+       class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'agent'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 border border-transparent'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         "
         (click)="selectMenuItem('agent')"
       >
-        <span
-          *ngIf="activeMenuItem !== 'agent'"
-          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
-        ></span>
-
-        <i
-          class="fas fa-robot w-5 text-base relative z-10"
-          [ngClass]="activeMenuItem === 'agent' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        ></i>
-        <span
-          class="relative z-10"
-          [ngClass]="activeMenuItem === 'agent' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        >
-          AI Agent
-        </span>
+        <i class="fas fa-robot w-5 text-base"></i>
+        <span>AI Agent</span>
       </button>
 
       <button
         *ngIf="!isManager"
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors relative overflow-hidden group"
+          class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'create-account'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 border border-transparent'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         "
         (click)="selectMenuItem('create-account')"
       >
-        <span
-          *ngIf="activeMenuItem !== 'create-account'"
-          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
-        ></span>
-
-        <i
-          class="fas fa-user-plus w-5 text-base relative z-10"
-          [ngClass]="activeMenuItem === 'create-account' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        ></i>
-        <span
-          class="relative z-10"
-          [ngClass]="activeMenuItem === 'create-account' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        >
-          Tạo tài khoản
-        </span>
+        <i class="fas fa-user-plus w-5 text-base"></i>
+        <span>Tạo tài khoản</span>
       </button>
 
       <button
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors relative overflow-hidden group"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'calendar'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 border border-transparent'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         "
         (click)="selectMenuItem('calendar')"
       >
-        <span
-          *ngIf="activeMenuItem !== 'calendar'"
-          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
-        ></span>
-
-        <i
-          class="fas fa-calendar-alt w-5 text-base relative z-10"
-          [ngClass]="activeMenuItem === 'calendar' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        ></i>
-        <span
-          class="relative z-10"
-          [ngClass]="activeMenuItem === 'calendar' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        >
-          Xem lịch họp
-        </span>
+        <i class="fas fa-calendar-alt w-5 text-base"></i>
+        <span>Xem lịch họp</span>
       </button>
 
       <button
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors relative overflow-hidden group"
+        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'room'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 border border-transparent'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         "
         (click)="selectMenuItem('room')"
       >
-        <span
-          *ngIf="activeMenuItem !== 'room'"
-          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
-        ></span>
-
-        <i
-          class="fa-solid fa-house relative z-10"
-          [ngClass]="activeMenuItem === 'room' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        ></i>
-        <span
-          class="relative z-10"
-          [ngClass]="activeMenuItem === 'room' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        >
-          Xem Phòng họp
-        </span>
+        <i class="fa-solid fa-house"></i>
+        <span>Xem Phòng họp</span>
       </button>
       <button
-        class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors relative overflow-hidden group"
+       class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-colors text-sm font-medium"
         [ngClass]="
           activeMenuItem === 'edit'
             ? 'bg-blue-50 text-blue-700 border border-blue-200'
-            : 'text-gray-600 border border-transparent'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         "
         (click)="selectMenuItem('edit')"
       >
-        <span
-          *ngIf="activeMenuItem !== 'edit'"
-          class="absolute inset-0 bg-gray-800 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-lg"
-        ></span>
-
-        <i
-          class="fa-solid fa-edit relative z-10"
-          [ngClass]="activeMenuItem === 'edit' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        ></i>
-        <span
-          class="relative z-10"
-          [ngClass]="activeMenuItem === 'edit' ? 'text-blue-700' : 'text-gray-600 group-hover:text-white transition-colors duration-300'"
-        >
-          Chỉnh sửa thông tin
-        </span>
+        <i class="fa-solid fa-edit"></i>
+        <span>Chỉnh sửa thông tin</span>
       </button>
     </nav>
 
